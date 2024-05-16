@@ -1,0 +1,12 @@
+setup.py
+blockmango/__init__.py
+blockmango/clan.py
+blockmango/decoration.py
+blockmango/friends.py
+blockmango/groupchat.py
+blockmango/user.py
+blockmango.egg-info/PKG-INFO
+blockmango.egg-info/SOURCES.txt
+blockmango.egg-info/dependency_links.txt
+blockmango.egg-info/requires.txt
+blockmango.egg-info/top_level.txt
