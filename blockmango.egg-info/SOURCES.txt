@@ -1,6 +1,9 @@
+LICENSE.md
+README.md
 setup.py
 blockmango/__init__.py
 blockmango/clan.py
+blockmango/constants.py
 blockmango/decoration.py
 blockmango/friends.py
 blockmango/groupchat.py

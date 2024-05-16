@@ -1,178 +1,146 @@
 import requests
-import json
+from constants import BASE_URL, BASE_URL_V2, BASE_URL_V3, HEADERS_TEMPLATE
 
 class Clan:
     def __init__(self, user_id, access_token):
-        self.user_id = user_id
-        self.access_token = access_token
         self.headers = {
+            **HEADERS_TEMPLATE,
             "userId": user_id,
-            "Access-Token": access_token,
-            "User-Agent": "okhttp/3.12.1"
+            "Access-Token": access_token
         }
 
-    def userclan(self):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/base"
-        response = requests.get(url, headers=self.headers)
+    def _handle_response(self, response):
+        return response.json()
+
+    def _get(self, endpoint, params=None):
+        response = requests.get(f"{BASE_URL}{endpoint}", headers=self.headers, params=params)
         return self._handle_response(response)
+
+    def _post(self, endpoint, json_data=None, params=None):
+        response = requests.post(f"{BASE_URL}{endpoint}", headers=self.headers, json=json_data, params=params)
+        return self._handle_response(response)
+
+    def _put(self, endpoint, json_data=None, params=None):
+        response = requests.put(f"{BASE_URL}{endpoint}", headers=self.headers, json=json_data, params=params)
+        return self._handle_response(response)
+
+    def _delete(self, endpoint, json_data=None, params=None):
+        response = requests.delete(f"{BASE_URL}{endpoint}", headers=self.headers, json=json_data, params=params)
+        return self._handle_response(response)
+
+    def userclan(self):
+        return self._get("/tribe/base")
 
     def joinclan(self, clan_id):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member"
-        json_data = {"clanId": clan_id, "msg": ""}
-        response = requests.post(url, headers=self.headers, json=json_data)
-        return self._handle_response(response)
+        return self._post("/tribe/member", json_data={"clanId": clan_id, "msg": ""})
 
     def leaveclan(self, clan_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member?clanId={clan_id}"
-        response = requests.delete(url, headers=self.headers)
-        return self._handle_response(response)
+        return self._delete("/tribe/member", params={"clanId": clan_id})
 
     def searchclan(self, clan_name, page_no=0, page_size=20):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/blurry/info"
         params = {"clanName": clan_name, "pageNo": page_no, "pageSize": page_size}
-        response = requests.get(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._get("/tribe/blurry/info", params=params)
 
     def infoclanId(self, clan_id):
-        url = "http://modsgs.sandboxol.com/clan/api/v2/clan/tribe"
-        params = {"clanId": clan_id}
-        response = requests.get(url, headers=self.headers, params=params)
+        response = requests.get(f"{BASE_URL_V2}/tribe", headers=self.headers, params={"clanId": clan_id})
         return self._handle_response(response)
 
     def inviteclan(self, friend_ids, message=""):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member/invite"
         json_data = {"friendIds": friend_ids, "msg": message}
-        response = requests.post(url, headers=self.headers, json=json_data)
-        return self._handle_response(response)
+        return self._post("/tribe/member/invite", json_data=json_data)
 
     def agreementuser(self, other_id):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member/agreement"
-        params = {"otherId": other_id}
-        response = requests.put(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._put("/tribe/member/agreement", params={"otherId": other_id})
 
     def rejectuser(self, other_id):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member/rejection"
-        params = {"otherId": other_id}
-        response = requests.put(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._put("/tribe/member/rejection", params={"otherId": other_id})
 
     def mutemember(self, member_id, minutes):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/mute/member"
         params = {"memberId": member_id, "minute": minutes}
-        response = requests.post(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._post("/tribe/mute/member", params=params)
 
     def unmutemember(self, member_id):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/mute/member"
-        params = {"memberId": member_id}
-        response = requests.delete(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._delete("/tribe/mute/member", params={"memberId": member_id})
 
     def muteall(self):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/mute"
-        params = {"muteStatus": 1}
-        response = requests.put(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._put("/tribe/mute", params={"muteStatus": 1})
 
     def unmuteall(self):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/mute"
-        params = {"muteStatus": 0}
-        response = requests.put(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._put("/tribe/mute", params={"muteStatus": 0})
 
     def removemember(self, member_ids):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member/remove/batch"
-        json_data = member_ids
-        response = requests.delete(url, headers=self.headers, json=json_data)
-        return self._handle_response(response)
+        return self._delete("/tribe/member/remove/batch", json_data=member_ids)
 
     def editclan(self, clan_id, currency=0, details="", head_pic="", name="", tags=None):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe"
         json_data = {
             "clanId": clan_id,
             "currency": currency,
             "details": details,
             "headPic": head_pic,
             "name": name,
-            "tags": tags if tags else []
+            "tags": tags or []
         }
-        response = requests.put(url, headers=self.headers, json=json_data)
-        return self._handle_response(response)
+        return self._put("/tribe", json_data=json_data)
 
     def add_remove_elders(self, type_, elder_ids):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/members"
         params = {"type": type_, "otherIds": elder_ids}
-        response = requests.put(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+        return self._put("/tribe/members", params=params)
 
-    def authentication(self, type):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/free/verification"
-        params = {"freeVerify": 1 if type == "on" else 0}
-        response = requests.put(url, headers=self.headers, params=params)
-        return self._handle_response(response)
+    def authentication(self, type_):
+        params = {"freeVerify": 1 if type_ == "on" else 0}
+        return self._put("/free/verification", params=params)
 
     def clanbuy(self, decoration_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/decorations/purchase?decorationId={decoration_id}"
-        response = requests.put(url, headers=self.headers)
+        url = f"{BASE_URL}/decorations/purchase"
+        response = requests.put(url, headers=self.headers, params={"decorationId": decoration_id})
         return self._handle_response(response)
 
     def teamtaskaccept(self, task_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tasks/accept?id={task_id}&type=0"
-        response = requests.put(url, headers=self.headers)
+        url = f"{BASE_URL}/tasks/accept"
+        response = requests.put(url, headers=self.headers, params={"id": task_id, "type": 0})
         return self._handle_response(response)
 
     def selftaskrefresh(self):
-        url = "http://modsgs.sandboxol.com/clan/api/v3/clan/personal/tasks?type=1"
-        response = requests.get(url, headers=self.headers)
+        response = requests.get(f"{BASE_URL_V3}/personal/tasks", headers=self.headers, params={"type": 1})
         return self._handle_response(response)
 
     def selftaskaccept(self, task_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tasks/accept?id={task_id}&type=1"
-        response = requests.put(url, headers=self.headers)
+        url = f"{BASE_URL}/tasks/accept"
+        response = requests.put(url, headers=self.headers, params={"id": task_id, "type": 1})
         return self._handle_response(response)
 
     def teamtaskclaim(self, task_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tasks?id={task_id}&type=0"
-        response = requests.put(url, headers=self.headers)
+        url = f"{BASE_URL}/tasks"
+        response = requests.put(url, headers=self.headers, params={"id": task_id, "type": 0})
         return self._handle_response(response)
 
     def selftaskclaim(self, task_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tasks?id={task_id}&type=1"
-        response = requests.put(url, headers=self.headers)
+        url = f"{BASE_URL}/tasks"
+        response = requests.put(url, headers=self.headers, params={"id": task_id, "type": 1})
         return self._handle_response(response)
 
     def clannotice(self, content):
-        url = "http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/bulletin"
         json_data = {"content": content}
-        response = requests.post(url, headers=self.headers, json=json_data)
-        return self._handle_response(response)
+        return self._post("/tribe/bulletin", json_data=json_data)
 
     def transferchief(self, new_chief_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tribe/member?otherId={new_chief_id}&type=3"
-        response = requests.put(url, headers=self.headers)
+        url = f"{BASE_URL}/tribe/member"
+        response = requests.put(url, headers=self.headers, params={"otherId": new_chief_id, "type": 3})
         return self._handle_response(response)
 
     def createclan(self, clan_id=0, currency=2, details="", head_pic="", name="", tags=None):
-        url = "http://modsgs.sandboxol.com/clan/api/v3/clan/tribe"
         json_data = {
             "clanId": clan_id,
             "currency": currency,
             "details": details,
             "headPic": head_pic,
             "name": name,
-            "tags": tags if tags else []
+            "tags": tags or []
         }
-        response = requests.post(url, headers=self.headers, json=json_data)
+        response = requests.post(f"{BASE_URL_V3}/tribe", headers=self.headers, json=json_data)
         return self._handle_response(response)
 
     def dissolveclan(self, clan_id):
-        url = f"http://modsgs.sandboxol.com/clan/api/v1/clan/tribe?clanId={clan_id}"
-        response = requests.delete(url, headers=self.headers)
+        url = f"{BASE_URL}/tribe"
+        response = requests.delete(url, headers=self.headers, params={"clanId": clan_id})
         return self._handle_response(response)
-
-    def _handle_response(self, response):
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return response.json()
