@@ -14,7 +14,6 @@ BASE_URL_SHOP = "http://modsgs.sandboxol.com/shop/api/v1"
 BASE_URL_USER = "http://modsgs.sandboxol.com/user/api/v1"
 BASE_URL_FRIEND = "http://modsgs.sandboxol.com/friend/api/v1"
 
-BASE_URL_USER = "http://modsgs.sandboxol.com/user/api"
 BASE_URL_ROUTE = "http://route.sandboxol.com/user/api"
 
 HEADERS_TEMPLATE = {
