@@ -82,7 +82,7 @@ class HTTPMixin:
   
   def _put(self, url, headers, json_data = None, params = None):
     """
-    A method that sends a DELETE request to an endpoint
+    A method that sends a PUT request to an endpoint
     and handles it using `self._handle_response` method
 
     Parameters
@@ -91,7 +91,7 @@ class HTTPMixin:
       The full endpoint url to which request should be made
 
     headers: `Dict[str, Any]`
-      The headers to include in the DELETE request
+      The headers to include in the PUT request
 
     json_data: `Optional[Dict[str, Any]]`
       A payload of the request. Defaults to None
@@ -109,7 +109,7 @@ class HTTPMixin:
   
   def _delete(self, url, headers, params = None):
     """
-    A method that sends a PUT request to an endpoint
+    A method that sends a DELETE request to an endpoint
     and handles it using `self._handle_response` method
 
     Parameters
@@ -118,7 +118,7 @@ class HTTPMixin:
       The full endpoint url to which request should be made
 
     headers: `Dict[str, Any]`
-      The headers to include in the PUT request
+      The headers to include in the DELETE request
 
     params: `Optional[Union[Dict[str, Any], bytes]]`
       The optional params to include in the request. Defaults to None
