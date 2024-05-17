@@ -28,7 +28,7 @@ clan = blockmango.Clan(user_id="your_id", access_token="your_token")
 
 ```python
 # Search for a clan by name
-clans = clan.searchclan("Nasa")
+clans = clan.search("Nasa")
 print(clans)
 ```
 
