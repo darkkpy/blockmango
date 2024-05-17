@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='blockmango',
-    version='1.3.8',
+    version='1.4.2',
     packages=['blockmango'],
     install_requires=['requests'],
     author='Dark',

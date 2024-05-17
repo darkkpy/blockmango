@@ -3,10 +3,10 @@ README.md
 setup.py
 blockmango/__init__.py
 blockmango/clan.py
-blockmango/constants.py
 blockmango/decoration.py
 blockmango/friends.py
 blockmango/groupchat.py
+blockmango/http.py
 blockmango/user.py
 blockmango.egg-info/PKG-INFO
 blockmango.egg-info/SOURCES.txt

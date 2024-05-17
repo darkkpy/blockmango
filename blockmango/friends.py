@@ -1,92 +1,64 @@
-import requests
-from constants import BASE_URL_FRIEND, BASE_URL_DECORATION, HEADERS_TEMPLATE
+from .http import HTTPMixin
 
-class Friends:
-    def __init__(self, user_id, access_token):
-        self.headers = {
-            **HEADERS_TEMPLATE,
-            "userId": user_id,
-            "Access-Token": access_token
-        }
 
-    def _handle_response(self, response):
-        return response.json()
+BASE_URL_FRIEND = "http://modsgs.sandboxol.com/friend/api/v1"
+BASE_URL_DECORATION = "http://modsgs.sandboxol.com/decoration/api/v1"
 
-    def _get(self, base_url, endpoint, params=None):
-        response = requests.get(f"{base_url}{endpoint}", headers=self.headers, params=params)
-        return self._handle_response(response)
 
-    def _post(self, base_url, endpoint, json_data=None, params=None):
-        response = requests.post(f"{base_url}{endpoint}", headers=self.headers, json=json_data, params=params)
-        return self._handle_response(response)
+class Friends(HTTPMixin):
+  __slots__ = ("headers",)
 
-    def _delete(self, base_url, endpoint, params=None):
-        response = requests.delete(f"{base_url}{endpoint}", headers=self.headers, params=params)
-        return self._handle_response(response)
+  def __init__(self, user_id, access_token):
+    self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1" }
 
-    def _put(self, base_url, endpoint, json_data=None, params=None):
-        response = requests.put(f"{base_url}{endpoint}", headers=self.headers, json=json_data, params=params)
-        return self._handle_response(response)
+  def delete_friend(self, friend_id):
+    endpoint = f"{BASE_URL_FRIEND}/friends"
+    params = { "friendId": friend_id }
+    return self._delete(endpoint, headers=self.headers, params=params)
 
-    def delete_friend(self, friend_id):
-        endpoint = "/friends"
-        params = {"friendId": friend_id}
-        return self._delete(BASE_URL_FRIEND, endpoint, params)
+  def request(self, friend_id, msg):
+    endpoint = f"{BASE_URL_FRIEND}/friends"
+    payload = { "friendId": friend_id, "msg": msg, "type": 1 }
+    headers = { **self.headers, "Content-Type": "application/json" }
+    return self._post(endpoint, headers=headers, json_data=payload)
 
-    def friend_request(self, friend_id, msg):
-        endpoint = "/friends"
-        payload = {"friendId": friend_id, "msg": msg, "type": 1}
-        headers = self.headers.copy()
-        headers["Content-Type"] = "application/json"
-        response = requests.post(f"{BASE_URL_FRIEND}{endpoint}", headers=headers, json=payload)
-        return self._handle_response(response)
+  def popularity(self, friend_id):
+    return self._get(f"{BASE_URL_FRIEND}/popularity/{friend_id}", headers=self.headers)
 
-    def friend_popularity(self, friend_id):
-        endpoint = f"/popularity/{friend_id}"
-        return self._get(BASE_URL_FRIEND, endpoint)
+  def info(self, friend_id):
+    return self._get(f"{BASE_URL_FRIEND}/friends/{friend_id}", headers=self.headers)
 
-    def friend_info(self, friend_id):
-        endpoint = f"/friends/{friend_id}"
-        return self._get(BASE_URL_FRIEND, endpoint)
+  def decoration(self, friend_id):
+    return self._get(f"{BASE_URL_DECORATION}/decorations-v2/{friend_id}/using", headers=self.headers)
 
-    def friend_decoration(self, friend_id):
-        endpoint = f"/decorations-v2/{friend_id}/using"
-        return self._get(BASE_URL_DECORATION, endpoint)
+  def add_popularity(self, friend_id):
+    endpoint = f"{BASE_URL_FRIEND}/popularity"
+    params = { "friendId": friend_id }
+    return self._post(endpoint, headers=self.headers, params=params)
 
-    def add_popularity(self, friend_id):
-        endpoint = "/popularity"
-        params = {"friendId": friend_id}
-        return self._post(BASE_URL_FRIEND, endpoint, params=params)
+  def friend_list(self):
+    endpoint = f"{BASE_URL_FRIEND}/friends/status"
+    headers ={ **self.headers, "language": "en_US" }
+    return self._get(endpoint, headers=headers)
 
-    def friend_list(self):
-        endpoint = "/friends/status"
-        headers = self.headers.copy()
-        headers["language"] = "en_US"
-        response = requests.get(f"{BASE_URL_FRIEND}{endpoint}", headers=headers)
-        return self._handle_response(response)
+  def nickname(self, friend_id, alias):
+    endpoint = f"{BASE_URL_FRIEND}/friends/{friend_id}/alias"
+    params = { "alias": alias }
+    return self._post(endpoint, headers=self.headers, params=params)
 
-    def friend_nickname(self, friend_id, alias):
-        endpoint = f"/friends/{friend_id}/alias"
-        params = {"alias": alias}
-        return self._post(BASE_URL_FRIEND, endpoint, params=params)
+  def friend_approve(self, friend_id):
+    return self._put(f"{BASE_URL_FRIEND}/friends/{friend_id}/agreement", headers=self.headers)
 
-    def friend_approve(self, friend_id):
-        endpoint = f"/friends/{friend_id}/agreement"
-        return self._put(BASE_URL_FRIEND, endpoint)
+  def friend_blacklist(self, friend_id):
+    endpoint = f"{BASE_URL_FRIEND}/friends/black"
+    params = { "friendId": friend_id }
+    return self._delete(endpoint, headers=self.headers, params=params)
 
-    def friend_blacklist(self, friend_id):
-        endpoint = "/friends/black"
-        params = {"friendId": friend_id}
-        return self._delete(BASE_URL_FRIEND, endpoint, params)
+  def reject_all(self):
+    return self._post(f"{BASE_URL_FRIEND}/friends/requests/reject-all", headers=self.headers)
 
-    def reject_all(self):
-        endpoint = "/friends/requests/approve-all"
-        return self._post(BASE_URL_FRIEND, endpoint)
+  def approve_all(self):
+    return self._post(f"{BASE_URL_FRIEND}/friends/requests/approve-all", headers=self.headers)
 
-    def approve_all(self):
-        endpoint = "/friends/requests/reject-all"
-        return self._post(BASE_URL_FRIEND, endpoint)
-
-    def friend_reject(self, friend_id):
-        endpoint = f"/friends/{friend_id}/rejection"
-        return self._put(BASE_URL_FRIEND, endpoint)
+  def friend_reject(self, friend_id):
+    return self._put(f"{BASE_URL_FRIEND}/friends/{friend_id}/rejection", headers=self.headers)
