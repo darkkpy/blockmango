@@ -1,4 +1,8 @@
-blockmango.egg-info/
+# Ignore directories generated during build
 build/
 dist/
+blockmango.egg-info/
 
+# Ignore compiled Python files
+*.pyc
+__pycache__/
