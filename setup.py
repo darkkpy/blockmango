@@ -2,13 +2,13 @@ from setuptools import setup
 
 setup(
     name='blockmango',
-    version='1.4.2',
+    version='1.4.3',
     packages=['blockmango'],
     install_requires=['requests'],
     author='Dark',
     author_email='darkness0777@proton.me',
     description='Blockman Go API package',
-    url='https://github.com/DarkPython69/blockmango',
+    url='https://github.com/darkkpy/blockmango',
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
