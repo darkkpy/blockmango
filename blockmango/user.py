@@ -1,56 +1,39 @@
 from .http import HTTPMixin
 
-
 BASE_URL_USER = "http://modsgs.sandboxol.com/user/api/v1"
 BASE_URL_ROUTE = "http://route.sandboxol.com/user/api"
-BASE_URL_USER_INFO = "http://modsgs.sandboxol.com/api"
+BASE_URL_USER_INFO = "http://modsgs.sandboxol.com/user/api"
 
 class User(HTTPMixin):
-  __slots__ = ("headers",)
+    __slots__ = ("headers",)
 
-  def __init__(self, user_id, access_token):
-    self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1" }
+    def __init__(self, user_id, access_token):
+        self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1" }
 
-  def get_user_info(self):
-    return self._get(f"{BASE_URL_USER_INFO}/v2/user/details/info", headers=self.headers)
+    def get_user_info(self):
+        return self._get(f"{BASE_URL_USER_INFO}/v2/user/details/info", headers=self.headers)
 
-  def set_birthday(self, birthday):
-    endpoint = f"{BASE_URL_USER}/user/info"
-    json_data = { "birthday": birthday }
-    return self._put(endpoint, headers=self.headers, json_data=json_data)
+    def set_birthday(self, birthday):
+        return self._put(f"{BASE_URL_USER}/user/info", headers=self.headers, json_data={"birthday": birthday})
 
-  def login(self, device_id, device_sign, password, userId):
-    endpoint = f"{BASE_URL_ROUTE}/v1/app/login"
-    headers = { **self.headers, "bmg-sign": device_sign, "bmg-device-id": device_id }
-    json_data = { "password": password, "uid": userId }
-    return self._post(endpoint, headers=headers, json_data=json_data)
+    def login(self, device_id, device_sign, password, userId):
+        headers = { **self.headers, "bmg-sign": device_sign, "bmg-device-id": device_id }
+        return self._post(f"{BASE_URL_ROUTE}/v1/app/login", headers=headers, json_data={"password": password, "uid": userId})
 
-  def change_name(self, new_name, old_name):
-    endpoint = f"{BASE_URL_USER_INFO}/v3/user/nickName"
-    params = { "newName": new_name, "oldName": old_name }
-    return self._put(endpoint, headers=self.headers, params=params)
+    def change_name(self, new_name, old_name):
+        return self._put(f"{BASE_URL_USER_INFO}/v3/user/nickName", headers=self.headers, params={"newName": new_name, "oldName": old_name})
 
-  def change_details(self, new_details):
-    endpoint = f"{BASE_URL_USER_INFO}/v1/user/info"
-    json_data = { "details": new_details }
-    return self._put(endpoint, headers=self.headers, json_data=json_data)
+    def change_details(self, new_details):
+        return self._put(f"{BASE_URL_USER_INFO}/v1/user/info", headers=self.headers, json_data={"details": new_details})
 
-  def change_pfp(self, pfp_url):
-    endpoint = f"{BASE_URL_USER}/user/info"
-    json_data = { "picUrl": pfp_url }
-    return self._put(endpoint, headers=self.headers, json_data=json_data)
+    def change_pfp(self, pfp_url):
+        return self._put(f"{BASE_URL_USER}/user/info", headers=self.headers, json_data={"picUrl": pfp_url})
 
-  def modify_password(self, old_password, new_password):
-    endpoint = f"{BASE_URL_USER}/user/password/modify"
-    json_data = {"confirmPassword": "", "newPassword": new_password, "oldPassword": old_password}
-    return self._post(endpoint, headers=self.headers, json_data=json_data)
+    def modify_password(self, old_password, new_password):
+        return self._post(f"{BASE_URL_USER}/user/password/modify", headers=self.headers, json_data={"confirmPassword": "", "newPassword": new_password, "oldPassword": old_password})
 
-  def bind_email(self, email, verify_code):
-    endpoint = f"{BASE_URL_USER}/users/bind/email"
-    json_data = { "email": email, "verifyCode": verify_code }
-    return self._post(endpoint, headers=self.headers, json_data=json_data)
+    def bind_email(self, email, verify_code):
+        return self._post(f"{BASE_URL_USER}/users/bind/email", headers=self.headers, json_data={"email": email, "verifyCode": verify_code})
 
-  def unbind_email(self, verify_code, email):
-    endpoint = f"{BASE_URL_USER_INFO}/v2/users/{self.headers['userId']}/emails"
-    params = { "email": email, "verifyCode": verify_code }
-    return self._delete(endpoint, headers=self.headers, params=params)
+    def unbind_email(self, verify_code, email):
+        return self._delete(f"{BASE_URL_USER_INFO}/v2/users/{self.headers['userId']}/emails", headers=self.headers, params={"email": email, "verifyCode": verify_code})
