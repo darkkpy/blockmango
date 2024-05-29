@@ -1,31 +1,14 @@
 from setuptools import setup
-import os
 
-def read_md_files(filenames):
-    content = ""
-    for filename in filenames:
-        if filename == "README.md":
-            with open(filename, "r", encoding="utf-8") as file:
-                content += file.read() + "\n\n"
-        else:
-            with open(os.path.join("docs", filename), "r", encoding="utf-8") as file:
-                content += file.read() + "\n\n"
-    return content
+def read_md_file(filename):
+    with open(filename, "r", encoding="utf-8") as file:
+        return file.read() + "\n\n"
 
-markdown_files = [
-    "README.md",
-    "friends.md",
-    "groupchat.md",
-    "user.md",
-    "clan.md",
-    "decoration.md"
-]
-
-long_description = read_md_files(markdown_files)
+long_description = read_md_file("README.md")
 
 setup(
     name='blockmango',
-    version='1.4.6',
+    version='1.4.7',
     author='Dark',
     author_email='darkness0777@proton.me',
     description='Blockman Go API package',
