@@ -16,7 +16,7 @@ class Friends(HTTPMixin):
     def request(self, friend_id, msg):
         payload = {"friendId": friend_id, "msg": msg, "type": 1}
         headers = {"Content-Type": "application/json", **self.headers}
-        return self._post(f"{self.base_url_friend}/friends", headers=headers, json=payload)
+        return self._post(f"{self.base_url_friend}/friends", headers=headers, json_data=payload)  # Pass 'json_data' instead of 'json'
 
     def popularity(self, friend_id):
         return self._get(f"{self.base_url_friend}/popularity/{friend_id}", headers=self.headers)
