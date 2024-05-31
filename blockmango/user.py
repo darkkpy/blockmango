@@ -1,17 +1,16 @@
+# user.py
 from .http import HTTPMixin
-
-BASE_URL_USER = "http://modsgs.sandboxol.com/user/api/v1"
-BASE_URL_ROUTE = "http://route.sandboxol.com/user/api"
-BASE_URL_USER_INFO = "http://modsgs.sandboxol.com/user/api"
+from .config import BASE_URL_USER, BASE_URL_ROUTE, BASE_URL_USER_INFO
 
 class User(HTTPMixin):
     __slots__ = ("headers",)
+    base_url = BASE_URL_USER
 
     def __init__(self, user_id, access_token):
         self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1" }
 
     def get_user_info(self):
-        return self._get(f"{BASE_URL_USER_INFO}/v2/user/details/info", headers=self.headers)
+        return self._get(f"{self.base_url}/v2/user/details/info", headers=self.headers)
 
     def set_birthday(self, birthday):
         return self._put(f"{BASE_URL_USER}/user/info", headers=self.headers, json_data={"birthday": birthday})
@@ -36,4 +35,4 @@ class User(HTTPMixin):
         return self._post(f"{BASE_URL_USER}/users/bind/email", headers=self.headers, json_data={"email": email, "verifyCode": verify_code})
 
     def unbind_email(self, verify_code, email):
-        return self._delete(f"{BASE_URL_USER_INFO}/v2/users/{self.headers['userId']}/emails", headers=self.headers, params={"email": email, "verifyCode": verify_code})
+        return self._delete(f"{BASE_URL_USER_INFO}/v2/users/{self.headers['userId']}/emails", headers=self.headers, params={"email": email, "verifyCode": verify_code}) 
