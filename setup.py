@@ -8,7 +8,7 @@ long_description = read_md_file("README.md")
 
 setup(
     name='blockmango',
-    version='1.5.0',
+    version='1.5.1',
     author='Dark',
     author_email='darkness0777@proton.me',
     description='Blockman Go API package',
