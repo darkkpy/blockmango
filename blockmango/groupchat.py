@@ -9,7 +9,7 @@ class Group(HTTPMixin):
   __slots__ = ("headers",)
 
   def __init__(self, user_id, access_token):
-    self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1" }
+    self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1", "language": "en_US" }
 
   def create(self, member_ids):
     endpoint = f"{BASE_URL_GROUP_V2}/msg/group/chat"

@@ -7,7 +7,7 @@ class User(HTTPMixin):
     base_url = BASE_URL_USER
 
     def __init__(self, user_id, access_token):
-        self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1" }
+        self.headers = { "userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1", "language": "en_US" }
 
     def get_user_info(self):
         return self._get(f"{self.base_url}/v2/user/details/info", headers=self.headers)

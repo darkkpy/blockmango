@@ -9,7 +9,7 @@ class Clan(HTTPMixin):
     base_url_clan_v3 = BASE_URL_CLAN_V3
 
     def __init__(self, user_id, access_token):
-        self.headers = {"userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1"}
+        self.headers = {"userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1", "language": "en_US"}
 
     def user_clan(self):
         return self._get(f"{self.base_url_clan}/tribe/base", headers=self.headers)

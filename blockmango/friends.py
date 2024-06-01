@@ -8,7 +8,7 @@ class Friends(HTTPMixin):
     base_url_decoration = BASE_URL_DECORATION
 
     def __init__(self, user_id, access_token):
-        self.headers = {"userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1"}
+        self.headers = {"userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1", "language": "en_US"}
 
     def delete_friend(self, friend_id):
         return self._delete(f"{self.base_url_friend}/friends", headers=self.headers, params={"friendId": friend_id})

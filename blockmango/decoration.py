@@ -7,7 +7,7 @@ class Decoration(HTTPMixin):
     base_url = BASE_URL_DECORATION
 
     def __init__(self, user_id, access_token):
-        self.headers = {"userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1"}
+        self.headers = {"userId": user_id, "Access-Token": access_token, "User-Agent": "okhttp/3.12.1", "language": "en_US"}
 
     def skins(self, uid):
         params = {"engineVersion": "10105", "os": "android", "showVip": 1}
