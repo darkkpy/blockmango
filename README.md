@@ -1,23 +1,40 @@
 # Blockmango API Wrapper
 
- ![logo](https://i.ibb.co/mHCXSC3/images-28.jpg)
+**Status: Discontinued 🚫**
 
-This Python package provides a convenient way to interact with the Blockmango API.
+## Table of Contents
+- [Overview](#overview)
+- [Reason for Discontinuation](#reason-for-discontinuation)
+- [Important Information](#important-information)
+- [Alternative Solutions](#alternative-solutions)
+- [Legacy Content](#legacy-content)
+- [Disclaimer](#disclaimer)
+- [License](#license)
+- [Contact](#contact)
 
-## Installation
+## Overview
+This Python package was created to simplify interaction with the Blockmango API. Unfortunately, it's no longer actively maintained due to changes in the API. 😔
 
-You can install the package via pip:
+## Reason for Discontinuation
+The Blockmango API now requires authentication using an X-Sign header, making this package incompatible and obsolete. 🔐
 
-```bash
-pip install blockmango
-```
+## Important Information
+- **No further updates or bug fixes are planned.** 🚫
+- **Support and assistance are no longer available.** 🛠️
 
-## 📚 Docs
+## Alternative Solutions
+Explore other libraries or tools that support the updated Blockmango API authentication system, (even if theres none) 🔍
 
-For detailed usage instructions and examples, please refer to the documentation in the `docs` folder.
+## Legacy Content
+The code and documentation remain available for reference but may not work with the current Blockmango API. 📜
 
-For more information on available methods and parameters, contact me on discord, darkk.py.
+## Disclaimer
+By using this package, you accept the risks and limitations associated with outdated software. ⚠️
 
 ## License
+This project was licensed under the MIT License. For details, please refer to the LICENSE file. Note that the license terms may not apply to future or updated implementations. 📄
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+## Contact
+For any inquiries or discussions, you can reach me on Discord: **contradeus**. 💬
+
+_Last Updated: 14/08/2024_
