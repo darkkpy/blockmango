@@ -35,6 +35,6 @@ By using this package, you accept the risks and limitations associated with outd
 This project was licensed under the MIT License. For details, please refer to the LICENSE file. Note that the license terms may not apply to future or updated implementations. 📄
 
 ## Contact
-For any inquiries or discussions, you can reach me on Discord: **contradeus**. 💬
+For any inquiries or discussions, you can reach me on Discord: **oblivion.dark**. 💬
 
-_Last Updated: 14/08/2024_
+_Last Updated: 04/09/2024_
